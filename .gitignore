@@ -1,0 +1,57 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# ===== Environment variables / secrets =====
+.env
+.env.local
+*.pem
+kaggle.json
+
+# ===== Jupyter Notebook =====
+.ipynb_checkpoints/
+
+# ===== Training data (dataset thô — không commit) =====
+classification/training/data/
+
+# ===== RAG — vector database tự sinh ra =====
+rag/knowledge_base/chroma_db/
+
+# ===== Model checkpoints trung gian (giữ lại model.onnx cuối cùng, 
+# bỏ qua checkpoint tạm trong lúc train) =====
+classification/training/*.pth
+classification/training/checkpoints/
+
+# ===== Node.js / React (frontend + backend Node) =====
+node_modules/
+dist/
+build/
+.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===== Docker =====
+*.log
+
+# ===== OS files =====
+.DS_Store
+Thumbs.db
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.swp
+
+# ===== Misc =====
+*.zip
+*.tar.gz
