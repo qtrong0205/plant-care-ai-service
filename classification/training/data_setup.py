@@ -1,9 +1,12 @@
 import random
+import torch
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from PIL import Image
 from torch.utils.data import Dataset
+from torchvision import transforms
+from torch.utils.data import DataLoader
 
 IMAGE_EXTENSIONS = ("*.jpg", "*.jpeg", "*.png", "*.JPG", "*.JPEG", "*.PNG")
 
@@ -76,3 +79,29 @@ class ImageDataset(Dataset):
             image = self.transform(image)
 
         return image, label
+
+def create_transform(size: Tuple[int, int],
+                     num_magnitude_bins: int = 31,
+                     train: bool=True):
+    if train:
+        transform = transforms.Compose([
+            transforms.Resize(size=size),
+            transforms.TrivialAugmentWide(num_magnitude_bins=num_magnitude_bins),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                  std=[0.229, 0.224, 0.225]),
+        ])
+    else:
+        transform = transforms.Compose([
+            transforms.Resize(size=size),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                  std=[0.229, 0.224, 0.225]),
+        ])
+    return transform
+
+def create_dataloader(dataset,
+                      batch_size,
+                      shuffle=True):
+    dataloader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=shuffle)
+    return dataloader
