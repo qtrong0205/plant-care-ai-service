@@ -25,7 +25,7 @@ def plot_transformed_images(dataloader: torch.utils.data.DataLoader,
         img_unnormalized = img * std + mean
         img_unnormalized = img_unnormalized.permute(1, 2, 0).clamp(0, 1)
 
-        plt.figure()
+        plt.figure(figsize=(12, 7))
         plt.imshow(img_unnormalized)
         plt.title(class_names[label])
         plt.axis("off")
