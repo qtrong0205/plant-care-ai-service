@@ -104,26 +104,10 @@ def train(model: nn.Module,
           loss_fn: nn.Module,
           optimizer: torch.optim.Optimizer,
           epochs: int,
-          device: torch.device) -> Dict[str, List[float]]:
+          device: torch.device,
+          checkpoint_path: str = "best_model.pth") -> Dict[str, List[float]]:
     """Trains and tests a PyTorch model for a number of epochs.
-
-    Runs train_step() and test_step() functions for a number of epochs,
-    training and testing the model in the same epoch loop.
-
-    Args:
-        model: A PyTorch model to be trained and tested.
-        train_dataloader: A DataLoader instance for the model to be trained on.
-        test_dataloader: A DataLoader instance for the model to be tested on.
-        loss_fn: A PyTorch loss function to calculate loss on both datasets.
-        optimizer: A PyTorch optimizer to help minimize the loss function.
-        epochs: An integer indicating how many epochs to train for.
-        device: A target device to compute on (e.g. "cuda" or "cpu").
-
-    Returns:
-        A dictionary of training and testing loss/accuracy metrics, with
-        each metric having a value for every epoch, in the form:
-        {"train_loss": [...], "train_acc": [...],
-         "test_loss": [...], "test_acc": [...]}
+    ...
     """
     model_results = {
         "train_loss": [],
@@ -131,6 +115,8 @@ def train(model: nn.Module,
         "test_loss": [],
         "test_acc": [],
     }
+
+    best_test_acc = float('-inf')   # tìm GIÁ TRỊ LỚN NHẤT của test_acc
 
     model.to(device)
 
@@ -156,5 +142,10 @@ def train(model: nn.Module,
         model_results["train_acc"].append(train_acc)
         model_results["test_loss"].append(test_loss)
         model_results["test_acc"].append(test_acc)
+
+        if test_acc > best_test_acc:
+            best_test_acc = test_acc
+            torch.save(model.state_dict(), checkpoint_path)
+            print(f"  → New best model saved (test_acc={test_acc:.4f})")
 
     return model_results
