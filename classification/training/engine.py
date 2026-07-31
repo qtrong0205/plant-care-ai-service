@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from typing import Tuple, Dict, List
-import tqdm.auto as tqdm
+from tqdm.auto import tqdm
 
 
 def train_step(model: nn.Module,
