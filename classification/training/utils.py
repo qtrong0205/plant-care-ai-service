@@ -29,3 +29,32 @@ def plot_transformed_images(dataloader: torch.utils.data.DataLoader,
         plt.imshow(img_unnormalized)
         plt.title(class_names[label])
         plt.axis("off")
+
+def plot_loss_curves(model_results):
+    """Plots training curves of a results dictionary."""
+    epochs = range(len(model_results["train_loss"]))
+
+    train_loss = model_results["train_loss"]
+    train_acc = model_results["train_acc"]
+    test_loss = model_results["test_loss"]
+    test_acc = model_results["test_acc"]
+
+    plt.figure(figsize=(15, 7))
+
+    # Plotting loss curve
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs, train_loss, label="Train loss")
+    plt.plot(epochs, test_loss, label="Test loss")
+    plt.title("Loss")
+    plt.xlabel("Epochs")
+    plt.legend()
+
+    # Plotting accuracy curve
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs, train_acc, label="Train acc")
+    plt.plot(epochs, test_acc, label="Test acc")
+    plt.title("Accuracy")
+    plt.xlabel("Epochs")
+    plt.legend()
+
+    plt.show()
