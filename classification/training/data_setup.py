@@ -102,6 +102,7 @@ def create_transform(size: Tuple[int, int],
 
 def create_dataloader(dataset,
                       batch_size,
+                      num_workers,
                       shuffle=True):
-    dataloader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=shuffle)
+    dataloader = DataLoader(dataset=dataset, batch_size=batch_size, num_workers=num_workers, shuffle=shuffle)
     return dataloader
