@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from typing import Tuple, Dict, List
 from tqdm.auto import tqdm
-
+from timeit import default_timer as timer
 
 def train_step(model: nn.Module,
                dataloader: torch.utils.data.DataLoader,
@@ -114,11 +114,15 @@ def train(model: nn.Module,
         "train_acc": [],
         "test_loss": [],
         "test_acc": [],
+        "total_time": 0
     }
 
-    best_test_acc = float('-inf')   # tìm GIÁ TRỊ LỚN NHẤT của test_acc
+    best_test_acc = float('-inf')  
 
     model.to(device)
+
+    # Start the timer
+    start_time = timer()
 
     for epoch in tqdm(range(epochs)):
         train_loss, train_acc = train_step(model=model,
@@ -147,5 +151,11 @@ def train(model: nn.Module,
             best_test_acc = test_acc
             torch.save(model.state_dict(), checkpoint_path)
             print(f"  → New best model saved (test_acc={test_acc:.4f})")
+
+    end_time = timer()
+
+    total_time = end_time - start_time
+    model_results["total_time"] = total_time
+    print(f"\nTotal training time: {total_time:.2f} seconds")
 
     return model_results
