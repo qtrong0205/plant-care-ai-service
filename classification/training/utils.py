@@ -1,7 +1,7 @@
 import torch
 import random
 import matplotlib.pyplot as plt
-from typing import List, Optional
+from typing import List, Optional, Tuple
 from torch import nn
 
 
@@ -108,3 +108,23 @@ def pred_and_plot_images(model: nn.Module,
             plt.imshow(img_unnormalized)
             plt.title(title, color="green" if true_class == pred_class else "red")
             plt.axis("off")
+
+def export_to_onnx(model: nn.Module,
+                   example_input: torch.Tensor,
+                   save_path: str,
+                   input_names: Optional[List[str]] = None,
+                   output_names: Optional[List[str]] = None,
+                   dynamo: bool = True) -> None:
+    """Exports a trained PyTorch model to ONNX format."""
+    model.eval()
+
+    torch.onnx.export(
+        model=model,
+        args=(example_input,),
+        f=save_path,
+        input_names=input_names or ["input"],
+        output_names=output_names or ["output"],
+        dynamo=dynamo,
+    )
+
+    print(f"Model exported to {save_path}")
