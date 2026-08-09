@@ -3,7 +3,7 @@ import onnxruntime as ort
 from pathlib import Path
 from typing import Dict
 
-from labels import LABELS  
+from .labels import LABELS  
 
 MODEL_PATH = Path(__file__).parent / "model" / "model.onnx"
 session = ort.InferenceSession(str(MODEL_PATH))

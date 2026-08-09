@@ -1,9 +1,9 @@
 from pathlib import Path
 from fastapi import APIRouter, File, UploadFile, HTTPException, status
 
-from preprocess import preprocess_image
-from inference import predict
-from schemas import ClassifyResponse
+from .preprocess import preprocess_image
+from .inference import predict
+from .schemas import ClassifyResponse
 
 router = APIRouter()
 
